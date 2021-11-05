@@ -44,7 +44,7 @@ compiler/build/*
 compiler/.gradle/*
 
 # Data
-db/
+# db/
 activemq-data/
 .data/
 # Tomcat
