@@ -9,7 +9,12 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+/**
+ * 实现认证与授权的方法
+ */
+@Component
 public class OAuth2Realm extends AuthorizingRealm {
 
     @Autowired
@@ -22,6 +27,7 @@ public class OAuth2Realm extends AuthorizingRealm {
 
     /**
      * 授权（验证权限时调用）
+     * 返回授权对象
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -33,6 +39,7 @@ public class OAuth2Realm extends AuthorizingRealm {
 
     /**
      * 认证（登录时调用）
+     * 返回认证对象
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {

@@ -2,6 +2,9 @@ package cn.vuffy.emos.wx.config.shiro;
 
 import org.apache.shiro.authc.AuthenticationToken;
 
+/**
+ * 实现认证与授权的方法
+ */
 public class OAuth2Token implements AuthenticationToken {
 
     private String token;

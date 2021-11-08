@@ -39,13 +39,11 @@ public class JwtUtil {
         return token;
     }
 
-    public int getUserID(String token) {
-        try {
-            DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaim("userId").asInt();
-        } catch (Exception e) {
-            throw new EmosException("令牌无效");
-        }
+    // 解码
+    public int getUserId(String token){
+        DecodedJWT jwt=JWT.decode(token);
+        int userId=jwt.getClaim("userId").asInt();
+        return userId;
     }
 
     public void verifierToken(String token) {
