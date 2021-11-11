@@ -61,7 +61,6 @@ public class UserServiceImpl implements UserService {
 
         // role=[0]对应超级管理员的权限
         // status=1对应员工在职的状态
-
         if (adminRegisterCode.equals(registerCode)) {
             //查询超级管理员帐户是否已经绑定
             boolean bool = userDao.haveRootUser();

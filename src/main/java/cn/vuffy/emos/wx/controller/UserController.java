@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,21 +36,24 @@ public class UserController {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private RedisTemplete redisTemplete;
+    private RedisTemplate redisTemplate;
 
     @Value("${emos.jwt.cache-expire}")
     private int cacheExpire;
 
+    /**
+     * @param form 客户端提交过来的数据
+     * @return
+     */
+    @PostMapping("/register")
+    @ApiOperation("注册用户")
     public R register(@Valid @RequestBody RegisterForm form) {
         int userId = userService.registerUser(form.getRegisterCode(), form.getCode(), form.getNickname(), form.getPhoto());
+        // 根据用户的主键id生成token
         String token = jwtUtil.createToken(userId);
         Set<String> permsSet = userService.searchUserPermissions(userId);
         savaCacheToken(token, userId);
         return R.ok("用户注册成功").put("token", token).put("permission", permsSet);
-    }
-
-    private void savaCacheToken(String token, int userId) {
-        redisTemplate.opsForValue().set(token, userId + "", cacheExpire, TimeUnit.DAYS);
     }
 
     @PostMapping("/login")
@@ -60,5 +64,15 @@ public class UserController {
         Set<String> permsSet = userService.searchUserPermissions(id);
         savaCacheToken(token, id);
         return R.ok("登录成功").put("token", token).put("permissino", permsSet);
+    }
+
+    /**
+     * 将token保存至Redis
+     *
+     * @param token
+     * @param userId
+     */
+    private void savaCacheToken(String token, int userId) {
+        redisTemplate.opsForValue().set(token, userId + "", cacheExpire, TimeUnit.DAYS);
     }
 }

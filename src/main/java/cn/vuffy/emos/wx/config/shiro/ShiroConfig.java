@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * @description: 把OAuth2Filter和OAuth2Realm配置到Shiro框架，这样搭建的Shiro+JWT才算生效
+ * @description:
  * @author: luf
  * @create: 2021-11-08 22:36
  **/
@@ -22,23 +22,23 @@ import java.util.Map;
 public class ShiroConfig {
 
     @Bean("securityManager")
-    public SecurityManager securityManager(OAuth2Realm oAuth2Realm) {
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(oAuth2Realm);
-        securityManager.setSessionManager(null);
+    public SecurityManager securityManager(OAuth2Realm realm){
+        DefaultWebSecurityManager securityManager=new DefaultWebSecurityManager();
+        securityManager.setRealm(realm);
+        securityManager.setRememberMeManager(null);
         return securityManager;
     }
 
     @Bean("shiroFilter")
-    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager, OAuth2Filter filter) {
-        ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
+    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager,OAuth2Filter filter){
+        ShiroFilterFactoryBean shiroFilter=new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
 
-        Map<String, Filter> map = new HashMap<>();
-        map.put("oauth2", filter);
+        Map<String , Filter> map=new HashMap<>();
+        map.put("oauth2",filter);
         shiroFilter.setFilters(map);
 
-        Map<String, String> filterMap = new LinkedHashMap<>();
+        Map<String,String> filterMap=new LinkedHashMap<>();
         filterMap.put("/webjars/**", "anon");
         filterMap.put("/druid/**", "anon");
         filterMap.put("/app/**", "anon");
@@ -57,15 +57,18 @@ public class ShiroConfig {
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 
         return shiroFilter;
+
     }
 
+
     @Bean("lifecycleBeanPostProcessor")
-    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor(){
         return new LifecycleBeanPostProcessor();
     }
 
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
-        AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager){
+        AuthorizationAttributeSourceAdvisor advisor=new AuthorizationAttributeSourceAdvisor();
         advisor.setSecurityManager(securityManager);
         return advisor;
     }

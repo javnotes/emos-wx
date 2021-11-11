@@ -1,9 +1,7 @@
 package cn.vuffy.emos.wx.config.shiro;
 
 import cn.hutool.core.util.StrUtil;
-import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -23,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-
 /**
  * @description: 过滤器，可拦截所有Http请求
  * 1. 判断哪些请求应该被 Shirol处理
@@ -43,6 +40,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
 
     @Autowired
     private JwtUtil jwtUtil;
+
     @Autowired
     private RedisTemplate redisTemplate;
 
@@ -62,7 +60,6 @@ public class OAuth2Filter extends AuthenticatingFilter {
         if (StrUtil.isBlank(token)) {
             return null;
         }
-
         return new OAuth2Token(token);
     }
 
@@ -84,7 +81,6 @@ public class OAuth2Filter extends AuthenticatingFilter {
         if (req.getMethod().equals(RequestMethod.OPTIONS.name())) {
             return true;
         }
-
         // 除了Options请求外，所有请求都要被Shiro处理
         return false;
     }
@@ -170,7 +166,6 @@ public class OAuth2Filter extends AuthenticatingFilter {
         } catch (Exception exception) {
 
         }
-
         return false;
     }
 
@@ -197,7 +192,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
         String token = httpRequest.getHeader("token");
 
         // 如果header中不存在token，则从参数中获取token
-        if (StringUtils.isBlank(token)) {
+        if (StrUtil.isBlank(token)) {
             token = httpRequest.getParameter("token");
         }
         return token;
