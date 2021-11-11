@@ -14,15 +14,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * @description: TODO 类描述
- * @author: luffyhub
+ * @author: luf
  * @date: 2021/11/11
  **/
 @Service
 @Slf4j
-@Scope("ptototype")
+@Scope("prototype")
 public class UserServiceImpl implements UserService {
 
     @Value("${wx.app-id}")
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
         if (adminRegisterCode.equals(registerCode)) {
             //查询超级管理员帐户是否已经绑定
-            boolean bool = userDao.havaRootUser();
+            boolean bool = userDao.haveRootUser();
             if (!bool) {
                 // 系统中还没有绑定超级管理员
                 String openId = getOpenId(code);
@@ -87,6 +88,23 @@ public class UserServiceImpl implements UserService {
             return 0;
         }
 
+    }
+
+    @Override
+    public Set<String> searchUserPermissions(int userId) {
+        Set<String> permissions = userDao.searchUserPermissions(userId);
+        return permissions;
+    }
+
+    @Override
+    public Integer login(String code) {
+        String openId = getOpenId(code);
+        Integer userId = userDao.searchIdByOpenId(openId);
+        if (null == userId) {
+            throw new EmosException("账户不存在");
+        }
+        //TODO 从消息队列中接收消息，转移到消息表
+        return userId;
     }
 }
 
