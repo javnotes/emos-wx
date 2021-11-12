@@ -63,7 +63,8 @@ public class UserController {
         String token = jwtUtil.createToken(id);
         Set<String> permsSet = userService.searchUserPermissions(id);
         savaCacheToken(token, id);
-        return R.ok("登录成功").put("token", token).put("permissino", permsSet);
+        // 判定用户登陆成功之后，向客户端返回权限列表和Token令牌
+        return R.ok("登录成功").put("token", token).put("permission", permsSet);
     }
 
     /**
