@@ -24,7 +24,7 @@ import java.util.Set;
 @Service
 @Slf4j
 @Scope("prototype")
-public class UserServiceImpl implements UserService {
+public class   UserServiceImpl implements UserService {
 
     @Value("${wx.app-id}")
     private String appId;
