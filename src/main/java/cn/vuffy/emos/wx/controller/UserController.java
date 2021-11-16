@@ -43,7 +43,7 @@ public class UserController {
 
     /**
      * @param form 客户端提交过来的数据
-     * @return
+     * @return R extends HashMap<String, Object
      */
     @PostMapping("/register")
     @ApiOperation("注册用户")

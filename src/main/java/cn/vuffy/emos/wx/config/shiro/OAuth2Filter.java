@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+
 /**
  * @description: 过滤器，可拦截所有Http请求
  * 1. 判断哪些请求应该被 Shirol处理
@@ -54,8 +55,10 @@ public class OAuth2Filter extends AuthenticatingFilter {
      */
     @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
+        HttpServletRequest req = (HttpServletRequest) request;
+
         // 获取请求token
-        String token = getRequestToken((HttpServletRequest) request);
+        String token = getRequestToken(req);
 
         if (StrUtil.isBlank(token)) {
             return null;

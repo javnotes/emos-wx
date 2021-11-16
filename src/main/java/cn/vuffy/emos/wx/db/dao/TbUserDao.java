@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
 import java.util.Set;
+
 @Mapper
 public interface TbUserDao {
     public boolean haveRootUser();

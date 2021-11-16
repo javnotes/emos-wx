@@ -7,8 +7,10 @@ import java.io.IOException;
 
 /**
  * 为了让包装类XssHttpServletRequestWrapper生效，需创建XssFilter过滤器。
+ * @WebFilter 普通的Servlet过滤器，早于Spring MVC框架执行
+ * /* 拦截所有的请求路径
  */
-// 拦截所有的请求路径
+
 @WebFilter(urlPatterns = "/*")
 public class XssFilter implements Filter {
     @Override

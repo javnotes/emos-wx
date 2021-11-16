@@ -36,6 +36,7 @@ public class ShiroConfig {
 
         Map<String , Filter> map=new HashMap<>();
         map.put("oauth2",filter);
+        // 注册 Spring MVC 过滤器
         shiroFilter.setFilters(map);
 
         Map<String,String> filterMap=new LinkedHashMap<>();

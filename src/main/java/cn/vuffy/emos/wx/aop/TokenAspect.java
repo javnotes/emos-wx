@@ -23,6 +23,7 @@ public class TokenAspect {
     @Autowired
     private ThreadLocalToken threadLocalToken;
 
+    // 拦截所有web方法的返回值 R
     @Pointcut("execution(public * cn.vuffy.emos.wx.controller.*.*(..))")
     public void aspect() {
     }
